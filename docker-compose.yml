@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: smarterp
+      POSTGRES_USER: erp
+      POSTGRES_PASSWORD: erp
+    ports: ["5432:5432"]
+    volumes: [erp_data:/var/lib/postgresql/data]
+  backend:
+    build: ./backend
+    ports: ["5002:5002"]
+    environment:
+      DATABASE_URL: postgresql://erp:erp@postgres:5432/smarterp
+      JWT_SECRET_KEY: change-this-in-development
+    depends_on: [postgres]
+volumes:
+  erp_data:
